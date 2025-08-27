@@ -1,7 +1,26 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, TypedDict, Any, Optional, Hashable
+from typing import List, Dict, TypedDict, Any, Optional, Hashable, Union
 
-MessageType = Dict[str, str] # will need to be an ImageType
+# Image can be represented as base64 string, PIL Image, numpy array, or file path
+ImageType = Union[str, bytes, Any]  # str for base64/path, bytes for raw data, Any for PIL/numpy
+
+class TextContent(TypedDict):
+    type: str  # "text"
+    text: str
+
+class ImageContent(TypedDict):
+    type: str  # "image"
+    image: ImageType
+    # Optional metadata
+    image_format: Optional[str]  # "base64", "pil", "numpy", "path"
+    mime_type: Optional[str]     # "image/jpeg", "image/png", etc.
+
+ContentType = Union[TextContent, ImageContent]
+
+class MessageType(TypedDict):
+    role: str  # "user", "assistant", "system"
+    content: Union[str, List[ContentType]]  # str for backward compatibility, List[ContentType] for multimodal
+
 ConversationType = List[MessageType]
 
 

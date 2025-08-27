@@ -2,6 +2,9 @@ from typing import List, Dict, Any, TypedDict, Optional, Union
 from abc import ABC, abstractmethod
 from skyrl_train.inference_engines.base import ConversationType
 
+# Type hint for multimodal processor inputs/outputs
+MultiModalInputs = Dict[str, Any]  # pixel_values, image_bounds, tgt_sizes, etc.
+
 
 class GeneratorInput(TypedDict):
     prompts: List[ConversationType]
@@ -11,8 +14,14 @@ class GeneratorInput(TypedDict):
 
 
 class GeneratorOutput(TypedDict):
+    # Text token sequences
     prompt_token_ids: List[List[int]]
     response_ids: List[List[int]]
+    
+    # Multimodal inputs for training (from processor)
+    multimodal_inputs: Optional[List[Optional[MultiModalInputs]]]  # One per prompt
+    
+    # Original reward/training fields
     rewards: Union[List[float], List[List[float]]]
     loss_masks: List[List[int]]
     stop_reasons: Optional[List[str]]

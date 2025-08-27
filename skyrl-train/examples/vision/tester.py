@@ -12,7 +12,7 @@ from omegaconf import DictConfig
 from unittest.mock import AsyncMock, MagicMock
 
 """
-run with python -m  examples.vision.tester
+run with python -m  examples.vision.tester from mmSkyRL/skyrl-train
 """
 
 
@@ -69,7 +69,7 @@ def get_dataloader(prompts_dataset: PromptDataset) -> StatefulDataLoader:
     )
     return dataloader
 
-def setup_generator(tokenizer: AutoTokenizer) -> SkyRLGymGenerator:
+def setup_generator(tokenizer: AutoTokenizer) -> tuple[SkyRLGymGenerator, DictConfig]:
     # from tests/cpu/generators/test_skyrl_gym_generator_chat_templating.py
     mock_llm = MagicMock()
 
@@ -111,7 +111,7 @@ def setup_generator(tokenizer: AutoTokenizer) -> SkyRLGymGenerator:
         tokenizer=tokenizer,
         model_name=MODEL_NAME,
     )
-    return generator
+    return generator, generator_cfg
 
 
 if __name__ == "__main__":
@@ -130,16 +130,22 @@ if __name__ == "__main__":
     batch = next(iter(dataloader))
     breakpoint()
 
+    prompts = [b["prompt"] for b in batch]
+    env_classes = [b["env_class"] for b in batch]
+    env_extras = [b["env_extra"] for b in batch]
+
+
     # ------------------------------------------------------------
     # instantiate a Generator
-    generator = setup_generator(tokenizer)
+    generator, generator_cfg = setup_generator(tokenizer)
 
     # ------------------------------------------------------------
     # construct GeneratorInput
-    generator_input = GeneratorInput(prompts, env_classes, env_extras, sampling_params=
+    generator_input = GeneratorInput(prompts=prompts, env_classes=env_classes, env_extras=env_extras, sampling_params=generator_cfg.sampling_params)
 
     # ------------------------------------------------------------
-    generator_output: GeneratorOutput = asyncio.run(generator.generate(input_batch))
+    generator_output: GeneratorOutput = asyncio.run(generator.generate(generator_input))
+    breakpoint()
 
     # ------------------------------------------------------------
     # convert_to_training_input

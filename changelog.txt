@@ -44,3 +44,21 @@ okay im collapsing everything into tester.py so there's a clean lineage
 - construct GeneratorInput
 - run .generate(); get GeneratorOutput
 - convert to training input (unknown)
+
+
+---
+
+updating Messagetype from dict[str,str] to more complex for image content
+    - should itself update the ConversationType
+    - need to track the GenerateOutput as well
+    - mapping those from GeneratorInput to GeneratorOutput 
+    - need to use process_vision and extract_vision from qwen_vl_utils ?? 
+
+---
+
+need to make and register env
+- add to skryl_gyms/envs/__init__.py, make a new dir in skryl-gym/skryl_gyms/envs
+BaseTextEnv --> text in text-out envs
+    -> god dammit theres another MessageType, ConversationType
+    - make env.py --> _get_reward, step()
+    - utils.py --> extract_solution, compute_score, format score etc

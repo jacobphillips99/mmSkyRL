@@ -1242,6 +1242,15 @@ wheels = [
 ]
 
 [[package]]
+name = "mathruler"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/31/0b/cb3d2332f2e821752782cecd4aab40c7c73d00738f3f783050bff873915c/mathruler-0.1.0.tar.gz", hash = "sha256:38f02b5c5c12efcf2f20f70a5fde1d74d177615f873b2b8719a18e1ca1e4fb04", size = 15251, upload-time = "2025-02-22T03:25:10.839Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/54/a5/91d16d65b66251c2423bfedb9219c2e803f11d91af9bfba75f05ddc33bfb/mathruler-0.1.0-py3-none-any.whl", hash = "sha256:e8ce0d9e07e892bf971fbff5e6eee330f6a66fd022666c99828a0000c788079f", size = 15190, upload-time = "2025-02-22T03:25:09.85Z" },
+]
+
+[[package]]
 name = "matplotlib-inline"
 version = "0.1.7"
 source = { registry = "https://pypi.org/simple" }
@@ -2252,6 +2261,12 @@ wheels = [
 ]
 
 [[package]]
+name = "pylatexenc"
+version = "2.10"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/ab/34ec41718af73c00119d0351b7a2531d2ebddb51833a36448fc7b862be60/pylatexenc-2.10.tar.gz", hash = "sha256:3dd8fd84eb46dc30bee1e23eaab8d8fb5a7f507347b23e5f38ad9675c84f40d3", size = 162597, upload-time = "2021-04-06T07:56:07.854Z" }
+
+[[package]]
 name = "pynvml"
 version = "12.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2800,10 +2815,12 @@ dependencies = [
     { name = "hydra-core" },
     { name = "jaxtyping" },
     { name = "loguru" },
+    { name = "mathruler" },
     { name = "omegaconf" },
     { name = "peft" },
     { name = "pillow" },
     { name = "polars" },
+    { name = "pylatexenc" },
     { name = "ray" },
     { name = "skyrl-gym" },
     { name = "tensorboard" },
@@ -2877,12 +2894,14 @@ requires-dist = [
     { name = "hydra-core", specifier = "==1.3.2" },
     { name = "jaxtyping" },
     { name = "loguru" },
+    { name = "mathruler" },
     { name = "myst-parser", marker = "extra == 'docs'", specifier = ">=2.0.0" },
     { name = "omegaconf" },
     { name = "peft" },
     { name = "pillow" },
     { name = "polars" },
     { name = "pre-commit", marker = "extra == 'dev'" },
+    { name = "pylatexenc", specifier = ">=2.10" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=6.2.5" },
     { name = "pytest-asyncio", marker = "extra == 'dev'" },
     { name = "ray", specifier = "==2.48.0" },

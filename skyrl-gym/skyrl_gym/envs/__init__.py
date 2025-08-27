@@ -31,3 +31,8 @@ register(
     id="searchcode",
     entry_point="skyrl_gym.envs.searchcode.env:SearchCodeEnv",
 )
+
+register(
+    id="geo3k",
+    entry_point="skyrl_gym.envs.geo3k.env:Geo3kEnv",
+)

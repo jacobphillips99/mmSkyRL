@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from tqdm.asyncio import tqdm
 from dataclasses import dataclass
 
-from skyrl_train.generators.base import GeneratorInterface, GeneratorInput, GeneratorOutput
+from skyrl_train.generators.base import GeneratorInterface, GeneratorInput, GeneratorOutput, MultiModalInputs
 from skyrl_train.inference_engines.inference_engine_client import InferenceEngineClient
 from skyrl_train.inference_engines.base import InferenceEngineInput, ConversationType
 from omegaconf import DictConfig
@@ -335,6 +335,7 @@ class SkyRLGymGenerator(GeneratorInterface):
         generator_output: GeneratorOutput = {
             "prompt_token_ids": prompt_token_ids,
             "response_ids": responses,
+            "multimodal_inputs": None,  # TODO: Extract multimodal data from prompts when implementing full multimodal support
             "rewards": rewards,
             "loss_masks": loss_masks,
             "stop_reasons": stop_reasons,
@@ -417,6 +418,7 @@ class SkyRLGymGenerator(GeneratorInterface):
         generator_output: GeneratorOutput = {
             "prompt_token_ids": prompt_token_ids,
             "response_ids": responses,
+            "multimodal_inputs": None,  # TODO: Extract multimodal data from prompts when implementing full multimodal support
             "rewards": rewards,
             "loss_masks": loss_masks,
             "stop_reasons": stop_reasons,
@@ -425,6 +427,11 @@ class SkyRLGymGenerator(GeneratorInterface):
         }
 
         return generator_output
+
+    def _extract_multimodal_inputs(self, prompts: List[ConversationType]) -> Optional[List[Optional[MultiModalInputs]]]:
+        # try using process_vision_info and extract_vision_info from qwen_vl_utils.py
+        # TODO: implement this
+        return None
 
     def _rollout_metrics(self, responses: List[List[int]], rewards: List[float]):
         num_tokens_arr = np.array([len(response) for response in responses])

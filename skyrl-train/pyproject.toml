@@ -37,8 +37,10 @@ dependencies = [
     "jaxtyping",
     "skyrl-gym",
     "flash-attn",
+    "mathruler",
     "polars",
     "pillow",
+    "pylatexenc",
     "torchvision",
     "datasets>=3.6.0",
 ]
