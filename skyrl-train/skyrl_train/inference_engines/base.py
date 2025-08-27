@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, TypedDict, Any, Optional, Hashable
 
-MessageType = Dict[str, str]
+MessageType = Dict[str, str] # will need to be an ImageType
 ConversationType = List[MessageType]
 
 

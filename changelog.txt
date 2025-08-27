@@ -1,5 +1,46 @@
 - added qwen_vl_utils directly as a file (https://github.com/kq-chen/qwen-vl-utils/blob/main/src/qwen_vl_utils/vision_process.py)
+    - these are a separate standalone dep in veRL
 - adding veRL vision_utils (https://github.com/volcengine/verl/blob/b8dc5377c6484f5873102e02f6a63829528ab8c9/verl/utils/dataset/vision_utils.py)
-- need new deps: PIL, torchvision in pyproject.toml (specifically the skyrl-train one)
+- need new deps: PIL, torchvision in pyproject.toml (specifically the skyrl-train one, looks like torchvision already available)
 ----
-making examples/ dir for vision
+making examples/ dir for everything for vision changes; can be integrated to codebase later
+- copying over geo3k from verl and reformatting to match gsm8k (examples/gsm8k/gsm8k_dataset, examples/vision/geo3k_dataset.py)
+- just need to align the question/answer fields, add images
+----
+making mm prompt dataset (skyrl-examples/vision/mm_dataset.py)
+    - filter_toolong --> uses tokenizer and processor
+    - collate_fn and get_item aren't really doing anything in skyrl?
+    - dataloader is really plain as well -- do we need to stack images anywhere?
+simple test script `python -m  examples.vision.tester` --> just loads geo3k, gsm8k and instantiates the MMPromtDataset
+----
+in veRL, the RLHFDataset is used for actually tokenizing the items during __getitem__ (including images)
+- gets input_ids, attention_mask, position_ids, etc
+in skyrl-train, it looks like the PromptDataset just reshapes your item?
+- tokenization is passed to the gym?
+---
+
+!! places that need processor / image support !!
+ - Generator input is raw text messages, 
+        - will need to have images --> ConversationType, MessageType is Dict[str, str]
+    - GeneratorOutput is prompt token ids, response token ids (--> not sure)
+- skyrl_gym_generator has tokenizer
+    - tokenize the "base conversation" tokens
+    - "retokenization" happening at the end of turns aka retokenize on every turn
+    - apply_chat_template with tokenizer --> processor
+    - InferencEngineInput, 
+- RayPPOTrainer has tokenizer
+    - but its really just convert_prompts_responses_to_batch_tensors takes in GeneratorOutput and converts it to trainable inputs. Bit of a red herring w.r.t tokenizer, only used to get the pad token
+
+---
+
+okay im collapsing everything into tester.py so there's a clean lineage
+
+- create dataset with `geo3k_dataset.py`
+- setup --> MMPromptDataset, tokenizer, processor
+- display example of dataset
+- get dataloader
+- sample batch
+- instantiate generator
+- construct GeneratorInput
+- run .generate(); get GeneratorOutput
+- convert to training input (unknown)
