@@ -1,0 +1,5 @@
+- added qwen_vl_utils directly as a file (https://github.com/kq-chen/qwen-vl-utils/blob/main/src/qwen_vl_utils/vision_process.py)
+- adding veRL vision_utils (https://github.com/volcengine/verl/blob/b8dc5377c6484f5873102e02f6a63829528ab8c9/verl/utils/dataset/vision_utils.py)
+- need new deps: PIL, torchvision in pyproject.toml (specifically the skyrl-train one)
+----
+making examples/ dir for vision

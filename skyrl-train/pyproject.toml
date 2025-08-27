@@ -33,12 +33,14 @@ dependencies = [
     "debugpy==1.8.0",
     "hf_transfer",
     "wandb",
-    "datasets",
     "tensordict",
     "jaxtyping",
     "skyrl-gym",
     "flash-attn",
     "polars",
+    "pillow",
+    "torchvision",
+    "datasets>=3.6.0",
 ]
 
 [tool.uv]

@@ -8,6 +8,10 @@ authors = [
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = "==3.12.*"
+dependencies = [
+    "datasets>=4.0.0",
+    "pillow>=11.3.0",
+]
 
 [tool.black]
 line-length = 120
