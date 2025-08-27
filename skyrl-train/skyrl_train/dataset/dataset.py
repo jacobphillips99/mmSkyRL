@@ -22,6 +22,16 @@ class PromptDataset:
         self.num_workers = num_workers
         self._read_files_and_tokenize()
 
+    def _filter_toolong(self) -> datasets.Dataset:
+        tokenizer = self.tokenizer
+        prompt_key = self.prompt_key
+        return self.dataframe.filter(
+            lambda doc: len(tokenizer.apply_chat_template(doc[prompt_key], add_generation_prompt=True))
+            <= self.max_prompt_length,
+            num_proc=self.num_workers,
+            desc=f"Filtering prompts longer than {self.max_prompt_length} tokens",
+        )
+
     def _read_files_and_tokenize(self):
         dataframes = []
         for data_file in self.data_files:
@@ -35,19 +45,8 @@ class PromptDataset:
             dataframes.append(dataset)
 
         self.dataframe: datasets.Dataset = datasets.concatenate_datasets(dataframes)
-
         logger.info(f"dataset len: {len(self.dataframe)}")
-
-        # filter out too long prompts
-        tokenizer = self.tokenizer
-        prompt_key = self.prompt_key
-        self.dataframe = self.dataframe.filter(
-            lambda doc: len(tokenizer.apply_chat_template(doc[prompt_key], add_generation_prompt=True))
-            <= self.max_prompt_length,
-            num_proc=self.num_workers,
-            desc=f"Filtering prompts longer than {self.max_prompt_length} tokens",
-        )
-
+        self.dataframe = self._filter_toolong()
         logger.info(f"filter dataset len: {len(self.dataframe)}")
 
     def __getitem__(self, item):
